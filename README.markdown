@@ -60,6 +60,8 @@ await template.RenderAsync(Hash.FromAnonymousObject(new { name = "tobi" })); // 
 
 DotLiquidAsync is available under the Apache 2.0 open source license.
 
+The original DotLiquid project is dual-licensed under either the Apache 2.0 or MS-PL open source licenses. We have chosen to propagate only the Apache 2.0 license for this version. 
+
 For any licensing questions, please email [&#108;&#105;&#99;&#101;&#110;&#115;&#105;&#110;&#103;&#64;&#101;&#110;&#100;&#106;&#105;&#110;&#46;&#99;&#111;&#109;](&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#108;&#105;&#99;&#101;&#110;&#115;&#105;&#110;&#103;&#64;&#101;&#110;&#100;&#106;&#105;&#110;&#46;&#99;&#111;&#109;)
 
 ## Project Sponsor
