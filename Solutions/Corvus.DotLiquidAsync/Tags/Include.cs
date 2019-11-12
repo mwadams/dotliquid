@@ -1,6 +1,7 @@
 // <copyright file="Include.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid.Tags
 {
@@ -52,9 +53,8 @@ namespace DotLiquid.Tags
         public async override Task RenderAsync(Context context, TextWriter result)
         {
             IFileSystem fileSystem = context.Registers["file_system"] as IFileSystem ?? Template.FileSystem;
-            var templateFileSystem = fileSystem as ITemplateFileSystem;
             Template partial = null;
-            if (templateFileSystem != null)
+            if (fileSystem is ITemplateFileSystem templateFileSystem)
             {
                 partial = await templateFileSystem.GetTemplateAsync(context, this.templateName).ConfigureAwait(false);
             }

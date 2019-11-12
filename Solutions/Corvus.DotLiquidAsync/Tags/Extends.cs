@@ -1,6 +1,7 @@
 // <copyright file="Extends.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid.Tags
 {
@@ -111,9 +112,8 @@ namespace DotLiquid.Tags
         {
             // Get the template or template content and then either copy it (since it will be modified) or parse it
             IFileSystem fileSystem = context.Registers["file_system"] as IFileSystem ?? Template.FileSystem;
-            var templateFileSystem = fileSystem as ITemplateFileSystem;
             Template template = null;
-            if (templateFileSystem != null)
+            if (fileSystem is ITemplateFileSystem templateFileSystem)
             {
                 template = await templateFileSystem.GetTemplateAsync(context, this.templateName).ConfigureAwait(false);
             }
@@ -176,9 +176,7 @@ namespace DotLiquid.Tags
                 {
                     nodeList.ForEach(n =>
                     {
-                        var block = n as Block;
-
-                        if (block != null)
+                        if (n is Block block)
                         {
                             if (blocks.All(bl => bl.BlockName != block.BlockName))
                             {

@@ -1,6 +1,7 @@
 // <copyright file="Hash.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid
 {
@@ -13,7 +14,7 @@ namespace DotLiquid
 
     public class Hash : IDictionary<string, object>, IDictionary
     {
-        private static System.Collections.Concurrent.ConcurrentDictionary<string, Action<object, Hash>> mapperCache = new System.Collections.Concurrent.ConcurrentDictionary<string, Action<object, Hash>>();
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, Action<object, Hash>> MapperCache = new System.Collections.Concurrent.ConcurrentDictionary<string, Action<object, Hash>>();
         private readonly Func<Hash, string, object> lambda;
         private readonly Dictionary<string, object> nestedDictionary;
         private readonly object defaultValue;
@@ -45,7 +46,7 @@ namespace DotLiquid
         {
             string cacheKey = type.FullName + "_" + (includeBaseClassProperties ? "WithBaseProperties" : "WithoutBaseProperties");
 
-            if (!mapperCache.TryGetValue(cacheKey, out Action<object, Hash> mapper))
+            if (!MapperCache.TryGetValue(cacheKey, out Action<object, Hash> mapper))
             {
                 /* Bogdan Mart: Note regarding concurrency:
                  * This is concurrent dictionary, but if this will be called from two threads
@@ -64,7 +65,7 @@ namespace DotLiquid
                  * create bottleneck, as only one mapper could be generated at a time.
                  */
                 mapper = GenerateMapper(type, includeBaseClassProperties);
-                mapperCache[cacheKey] = mapper;
+                MapperCache[cacheKey] = mapper;
             }
 
             return mapper;

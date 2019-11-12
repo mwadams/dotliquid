@@ -1,6 +1,7 @@
 // <copyright file="Tag.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid
 {
@@ -89,11 +90,9 @@ namespace DotLiquid
         /// <returns></returns>
         internal async Task<string> RenderAsync(Context context)
         {
-            using (TextWriter result = new StringWriter(context.FormatProvider))
-            {
-                await this.RenderAsync(context, result);
-                return result.ToString();
-            }
+            using TextWriter result = new StringWriter(context.FormatProvider);
+            await this.RenderAsync(context, result);
+            return result.ToString();
         }
     }
 }

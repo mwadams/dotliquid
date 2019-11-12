@@ -1,6 +1,7 @@
 // <copyright file="StandardFilters.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid
 {
@@ -415,8 +416,7 @@ namespace DotLiquid
                     }
                     else
                     {
-                        var attr = type.GetTypeInfo().GetCustomAttributes(typeof(LiquidTypeAttribute), false).FirstOrDefault() as LiquidTypeAttribute;
-                        if (attr != null)
+                        if (type.GetTypeInfo().GetCustomAttributes(typeof(LiquidTypeAttribute), false).FirstOrDefault() is LiquidTypeAttribute attr)
                         {
                             drop = new DropProxy(e, attr.AllowedMembers);
                         }
@@ -780,8 +780,7 @@ namespace DotLiquid
         /// <returns></returns>
         public static double Abs(object input)
         {
-            double n;
-            return double.TryParse(input.ToString(), System.Globalization.NumberStyles.Number, CultureInfo.CurrentCulture, out n) ? Math.Abs(n) : 0;
+            return double.TryParse(input.ToString(), System.Globalization.NumberStyles.Number, CultureInfo.CurrentCulture, out double n) ? Math.Abs(n) : 0;
         }
 
         /// <summary>
@@ -791,11 +790,9 @@ namespace DotLiquid
         /// <returns></returns>
         public static object AtLeast(object input, object atLeast)
         {
-            double n;
-            bool inputNumber = double.TryParse(input.ToString(), System.Globalization.NumberStyles.Number, CultureInfo.CurrentCulture, out n);
+            bool inputNumber = double.TryParse(input.ToString(), System.Globalization.NumberStyles.Number, CultureInfo.CurrentCulture, out double n);
 
-            double min;
-            bool atLeastNumber = double.TryParse(atLeast.ToString(), System.Globalization.NumberStyles.Number, CultureInfo.CurrentCulture, out min);
+            bool atLeastNumber = double.TryParse(atLeast.ToString(), System.Globalization.NumberStyles.Number, CultureInfo.CurrentCulture, out double min);
 
             if (inputNumber && atLeastNumber)
             {
@@ -814,11 +811,9 @@ namespace DotLiquid
         /// <returns></returns>
         public static object AtMost(object input, object atMost)
         {
-            double n;
-            bool inputNumber = double.TryParse(input.ToString(), System.Globalization.NumberStyles.Number, CultureInfo.CurrentCulture, out n);
+            bool inputNumber = double.TryParse(input.ToString(), System.Globalization.NumberStyles.Number, CultureInfo.CurrentCulture, out double n);
 
-            double max;
-            bool atMostNumber = double.TryParse(atMost.ToString(), System.Globalization.NumberStyles.Number, CultureInfo.CurrentCulture, out max);
+            bool atMostNumber = double.TryParse(atMost.ToString(), System.Globalization.NumberStyles.Number, CultureInfo.CurrentCulture, out double max);
 
             if (inputNumber && atMostNumber)
             {

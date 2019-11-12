@@ -1,6 +1,7 @@
 // <copyright file="Capture.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid.Tags
 {
@@ -47,11 +48,9 @@ namespace DotLiquid.Tags
 
         public async override Task RenderAsync(Context context, TextWriter result)
         {
-            using (TextWriter temp = new StringWriter(result.FormatProvider))
-            {
-                await base.RenderAsync(context, temp).ConfigureAwait(false);
-                context.Scopes.Last()[this.to] = temp.ToString();
-            }
+            using TextWriter temp = new StringWriter(result.FormatProvider);
+            await base.RenderAsync(context, temp).ConfigureAwait(false);
+            context.Scopes.Last()[this.to] = temp.ToString();
         }
     }
 }

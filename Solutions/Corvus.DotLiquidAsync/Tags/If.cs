@@ -1,6 +1,7 @@
 // <copyright file="If.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid.Tags
 {
@@ -103,7 +104,7 @@ namespace DotLiquid.Tags
                 int conditionCount = 1;
 
                 // continue to process remaining items in the list backwards, in pairs
-                for (int i = 1; i < expressions.Count; i = i + 2)
+                for (int i = 1; i < expressions.Count; i += 2)
                 {
                     string @operator = expressions.TryGetAtIndexReverse(i).Trim();
 

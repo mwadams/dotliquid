@@ -1,6 +1,7 @@
 // <copyright file="EmbeddedFileSystem.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid.FileSystems
 {
@@ -46,10 +47,8 @@ namespace DotLiquid.FileSystems
                     Liquid.ResourceManager.GetString("LocalFileSystemTemplateNotFoundException"), templatePath);
             }
 
-            using (var reader = new StreamReader(stream))
-            {
-                return reader.ReadToEndAsync();
-            }
+            using var reader = new StreamReader(stream);
+            return reader.ReadToEndAsync();
         }
 
         public string FullPath(string templatePath)

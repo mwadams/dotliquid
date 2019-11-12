@@ -1,6 +1,7 @@
 // <copyright file="Block.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid
 {
@@ -30,7 +31,7 @@ namespace DotLiquid
         /// <param name="tokens"></param>
         protected override void Parse(List<string> tokens)
         {
-            this.NodeList = this.NodeList ?? new List<object>();
+            this.NodeList ??= new List<object>();
             this.NodeList.Clear();
 
             string token;
@@ -107,15 +108,14 @@ namespace DotLiquid
         /// <param name="tokens"></param>
         public virtual void UnknownTag(string tag, string markup, List<string> tokens)
         {
-            switch (tag)
+            SyntaxException exception = tag switch
             {
-                case "else":
-                    throw new SyntaxException(Liquid.ResourceManager.GetString("BlockTagNoElseException"), this.BlockName);
-                case "end":
-                    throw new SyntaxException(Liquid.ResourceManager.GetString("BlockTagNoEndException"), this.BlockName, this.BlockDelimiter);
-                default:
-                    throw new SyntaxException(Liquid.ResourceManager.GetString("BlockUnknownTagException"), tag);
-            }
+                "else" => new SyntaxException(Liquid.ResourceManager.GetString("BlockTagNoElseException"), this.BlockName),
+                "end" => new SyntaxException(Liquid.ResourceManager.GetString("BlockTagNoEndException"), this.BlockName, this.BlockDelimiter),
+                _ => new SyntaxException(Liquid.ResourceManager.GetString("BlockUnknownTagException"), tag),
+            };
+
+            throw exception;
         }
 
         /// <summary>

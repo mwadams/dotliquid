@@ -1,6 +1,7 @@
 // <copyright file="Context.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid
 {
@@ -110,7 +111,7 @@ namespace DotLiquid
         /// </summary>
         public Strainer Strainer
         {
-            get { return this.strainer = this.strainer ?? Strainer.Create(this); }
+            get { return this.strainer ??= Strainer.Create(this); }
         }
 
         /// <summary>
@@ -456,8 +457,8 @@ namespace DotLiquid
                 }
             }
 
-            scope = scope ?? this.Environments.LastOrDefault() ?? this.Scopes.Last();
-            variable = variable ?? this.LookupAndEvaluate(scope, key);
+            scope ??= this.Environments.LastOrDefault() ?? this.Scopes.Last();
+            variable ??= this.LookupAndEvaluate(scope, key);
 
             variable = Liquidize(variable);
             if (variable is IContextAware contextAwareVariable)

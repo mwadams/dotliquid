@@ -1,6 +1,7 @@
 // <copyright file="Condition.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid
 {
@@ -66,18 +67,15 @@ namespace DotLiquid
 
         public virtual bool Evaluate(Context context, IFormatProvider formatProvider)
         {
-            context = context ?? new Context(formatProvider);
+            context ??= new Context(formatProvider);
             bool result = InterpretCondition(this.Left, this.Right, this.Operator, context);
 
-            switch (this.childRelation)
+            return this.childRelation switch
             {
-                case "or":
-                    return result || this.childCondition.Evaluate(context, formatProvider);
-                case "and":
-                    return result && this.childCondition.Evaluate(context, formatProvider);
-                default:
-                    return result;
-            }
+                "or" => result || this.childCondition.Evaluate(context, formatProvider),
+                "and" => result && this.childCondition.Evaluate(context, formatProvider),
+                _ => result,
+            };
         }
 
         public void Or(Condition condition)

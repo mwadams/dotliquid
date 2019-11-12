@@ -1,6 +1,7 @@
 // <copyright file="Variable.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid
 {
@@ -69,7 +70,7 @@ namespace DotLiquid
 
         public async Task RenderAsync(Context context, TextWriter result)
         {
-            string ToFormattedString(object o, IFormatProvider ifp) => o is IFormattable ifo ? ifo.ToString(null, ifp) : (o?.ToString() ?? string.Empty);
+            static string ToFormattedString(object o, IFormatProvider ifp) => o is IFormattable ifo ? ifo.ToString(null, ifp) : (o?.ToString() ?? string.Empty);
 
             object output = await this.RenderInternalAsync(context).ConfigureAwait(false);
 
@@ -88,9 +89,7 @@ namespace DotLiquid
                 }
 
                 // treating Strings as IEnumerable, and was joining Chars in loop
-                string outputString = output as string;
-
-                if (outputString != null)
+                if (output is string outputString)
                 {
                 }
                 else if (output is IEnumerable)

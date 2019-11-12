@@ -1,6 +1,7 @@
 // <copyright file="Drop.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid
 {
@@ -211,8 +212,7 @@ namespace DotLiquid
             if (Template.NamingConvention is RubyNamingConvention)
             {
                 string rubyMethod = Template.NamingConvention.GetMemberName(method);
-
-                if (this.TypeResolution.CachedMethods.TryGetValue(rubyMethod, out MethodInfo mi) || this.TypeResolution.CachedProperties.TryGetValue(rubyMethod, out PropertyInfo pi))
+                if (this.TypeResolution.CachedMethods.TryGetValue(rubyMethod, out _) || this.TypeResolution.CachedProperties.TryGetValue(rubyMethod, out _))
                 {
                     return string.Format(Liquid.ResourceManager.GetString("DropWrongNamingConventionMessage"), rubyMethod);
                 }

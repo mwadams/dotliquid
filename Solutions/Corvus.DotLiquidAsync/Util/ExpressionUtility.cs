@@ -1,6 +1,7 @@
 // <copyright file="ExpressionUtility.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid.Util
 {
@@ -21,7 +22,7 @@ namespace DotLiquid.Util
         {
             NumericTypePromotions = new Dictionary<Type, Type[]>();
 
-            void Add(Type key, params Type[] types) => NumericTypePromotions[key] = types;
+            static void Add(Type key, params Type[] types) => NumericTypePromotions[key] = types;
 
             // Using the promotion table at
             // https://docs.microsoft.com/en-us/dotnet/standard/base-types/conversion-tables

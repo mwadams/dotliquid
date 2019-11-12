@@ -1,6 +1,7 @@
 // <copyright file="TableRow.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid.Tags.Html
 {
@@ -104,7 +105,7 @@ namespace DotLiquid.Tags.Html
                     context["tablerowloop"] = Hash.FromAnonymousObject(
                         new
                         {
-                            length = length,
+                            length,
                             index = index + 1,
                             index0 = index,
                             col = col + 1,

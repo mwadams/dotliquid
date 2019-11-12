@@ -1,6 +1,7 @@
 // <copyright file="Template.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid
 {
@@ -256,17 +257,17 @@ namespace DotLiquid
         /// </summary>
         public Hash Registers
         {
-            get { return this.registers = this.registers ?? new Hash(); }
+            get { return this.registers ??= new Hash(); }
         }
 
         public Hash Assigns
         {
-            get { return this.assigns = this.assigns ?? new Hash(); }
+            get { return this.assigns ??= new Hash(); }
         }
 
         public Hash InstanceAssigns
         {
-            get { return this.instanceAssigns = this.instanceAssigns ?? new Hash(); }
+            get { return this.instanceAssigns ??= new Hash(); }
         }
 
         /// <summary>
@@ -274,7 +275,7 @@ namespace DotLiquid
         /// </summary>
         public List<Exception> Errors
         {
-            get { return this.errors = this.errors ?? new List<Exception>(); }
+            get { return this.errors ??= new List<Exception>(); }
         }
 
         /// <summary>
@@ -324,7 +325,7 @@ namespace DotLiquid
         /// <returns></returns>
         public Task<string> RenderAsync(IFormatProvider formatProvider = null)
         {
-            formatProvider = formatProvider ?? CultureInfo.CurrentCulture;
+            formatProvider ??= CultureInfo.CurrentCulture;
             return this.RenderAsync(new RenderParameters(formatProvider));
         }
 
@@ -336,18 +337,16 @@ namespace DotLiquid
         /// <returns></returns>
         public async Task<string> RenderAsync(Hash localVariables, IFormatProvider formatProvider = null)
         {
-            formatProvider = formatProvider ?? CultureInfo.CurrentCulture;
-            using (var writer = new StringWriter(formatProvider))
+            formatProvider ??= CultureInfo.CurrentCulture;
+            using var writer = new StringWriter(formatProvider);
+            formatProvider = writer.FormatProvider;
+
+            var parameters = new RenderParameters(formatProvider)
             {
-                formatProvider = writer.FormatProvider;
+                LocalVariables = localVariables,
+            };
 
-                var parameters = new RenderParameters(formatProvider)
-                {
-                    LocalVariables = localVariables,
-                };
-
-                return await this.RenderAsync(writer, parameters).ConfigureAwait(false);
-            }
+            return await this.RenderAsync(writer, parameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -357,10 +356,8 @@ namespace DotLiquid
         /// <returns></returns>
         public async Task<string> RenderAsync(RenderParameters parameters)
         {
-            using (var writer = new StringWriter(parameters.FormatProvider))
-            {
-                return await this.RenderAsync(writer, parameters).ConfigureAwait(false);
-            }
+            using var writer = new StringWriter(parameters.FormatProvider);
+            return await this.RenderAsync(writer, parameters).ConfigureAwait(false);
         }
 
         public async Task<string> RenderAsync(TextWriter writer, RenderParameters parameters)
@@ -383,7 +380,7 @@ namespace DotLiquid
         private class StreamWriterWithFormatProvider : StreamWriter
         {
             public StreamWriterWithFormatProvider(Stream stream, IFormatProvider formatProvider)
-                : base(stream) => this.FormatProvider = formatProvider;
+                : base(stream, System.Text.Encoding.UTF8, 1024, true) => this.FormatProvider = formatProvider;
 
             public override IFormatProvider FormatProvider { get; }
         }
@@ -398,7 +395,7 @@ namespace DotLiquid
         {
             // Can't dispose this new StreamWriter, because it would close the
             // passed-in stream, which isn't up to us.
-            StreamWriter streamWriter = new StreamWriterWithFormatProvider(stream, parameters.FormatProvider);
+            using StreamWriter streamWriter = new StreamWriterWithFormatProvider(stream, parameters.FormatProvider);
             await this.RenderInternalAsync(streamWriter, parameters);
             await streamWriter.FlushAsync();
         }

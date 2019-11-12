@@ -1,6 +1,7 @@
 // <copyright file="Block.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid.Tags
 {
@@ -98,14 +99,11 @@ namespace DotLiquid.Tags
         {
             rootNodeList.ForEach(n =>
                 {
-                    var b1 = n as Block;
-
-                    if (b1 != null)
+                    if (n is Block b1)
                     {
                         List<object> found = rootNodeList.FindAll(o =>
                             {
-                                var b2 = o as Block;
-                                return b2 != null && b1.BlockName == b2.BlockName;
+                                return o is Block b2 && b1.BlockName == b2.BlockName;
                             });
 
                         if (found != null && found.Count > 1)

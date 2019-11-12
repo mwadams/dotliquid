@@ -1,6 +1,7 @@
 // <copyright file="Range.cs" company="Endjin Limited">
 // Copyright (c) Endjin Limited. All rights reserved.
 // </copyright>
+// Derived from code under the Apache 2 License from https://github.com/dotliquid/dotliquid
 
 namespace DotLiquid.Util
 {
@@ -84,17 +85,13 @@ namespace DotLiquid.Util
         internal static string Succ(string val, int length)
         {
             char lastChar = val[length - 1];
-            switch (lastChar)
+            return lastChar switch
             {
-                case '9':
-                    return ((length > 1) ? Succ(val, length - 1) : "1") + '0';
-                case 'z':
-                    return ((length > 1) ? Succ(val, length - 1) : "a") + 'a';
-                case 'Z':
-                    return ((length > 1) ? Succ(val, length - 1) : "A") + 'A';
-                default:
-                    return val.Substring(0, length - 1) + (char)(lastChar + 1);
-            }
+                '9' => ((length > 1) ? Succ(val, length - 1) : "1") + '0',
+                'z' => ((length > 1) ? Succ(val, length - 1) : "a") + 'a',
+                'Z' => ((length > 1) ? Succ(val, length - 1) : "A") + 'A',
+                _ => val.Substring(0, length - 1) + (char)(lastChar + 1),
+            };
         }
 
         public static IEnumerable<T> Inclusive<T>(T start, T finish, Func<T, T> succ, Comparison<T> comp)
