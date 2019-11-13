@@ -29,7 +29,7 @@ namespace DotLiquid.FileSystems
 
         public LocalFileSystem(string root)
         {
-            this.Root = root;
+            this.Root = Path.GetFullPath(root);
         }
 
         public Task<string> ReadTemplateFileAsync(Context context, string templateName)
