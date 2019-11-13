@@ -21,9 +21,9 @@ namespace DotLiquid.Tests
         [Category("windows")]
         public void TestLocal()
         {
-            var fileSystem = new LocalFileSystem(@"Some\Path");
-            Assert.AreEqual(Path.GetFullPath(@"Some\Path\_mypartial.liquid"), fileSystem.FullPath("mypartial"));
-            Assert.AreEqual(Path.GetFullPath(@"Some\Path\dir\_mypartial.liquid"), fileSystem.FullPath("dir/mypartial"));
+            var fileSystem = new LocalFileSystem(Path.GetFullPath(@"D:\Some\Path"));
+            Assert.AreEqual(Path.GetFullPath(@"D:\Some\Path\_mypartial.liquid"), fileSystem.FullPath("mypartial"));
+            Assert.AreEqual(Path.GetFullPath(@"D:\Some\Path\dir\_mypartial.liquid"), fileSystem.FullPath("dir/mypartial"));
 
             Assert.Throws<FileSystemException>(() => fileSystem.FullPath("../dir/mypartial"));
             Assert.Throws<FileSystemException>(() => fileSystem.FullPath("/dir/../../dir/mypartial"));
@@ -35,9 +35,9 @@ namespace DotLiquid.Tests
         [Category("windows")]
         public void TestLocalWithBracketsInPath()
         {
-            var fileSystem = new LocalFileSystem(@"Some (thing)\Path");
-            Assert.AreEqual(Path.GetFullPath(@"Some (thing)\Path\_mypartial.liquid"), fileSystem.FullPath("mypartial"));
-            Assert.AreEqual(Path.GetFullPath(@"Some (thing)\Path\dir\_mypartial.liquid"), fileSystem.FullPath("dir/mypartial"));
+            var fileSystem = new LocalFileSystem(Path.GetFullPath(@"D:\Some (thing)\Path"));
+            Assert.AreEqual(Path.GetFullPath(@"D:\Some (thing)\Path\_mypartial.liquid"), fileSystem.FullPath("mypartial"));
+            Assert.AreEqual(Path.GetFullPath(@"D:\Some (thing)\Path\dir\_mypartial.liquid"), fileSystem.FullPath("dir/mypartial"));
         }
 
 
